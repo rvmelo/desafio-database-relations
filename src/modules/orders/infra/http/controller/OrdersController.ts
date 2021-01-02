@@ -19,22 +19,15 @@ export default class OrdersController {
     const { customer_id, products } = request.body;
     const createOrder = container.resolve(CreateOrderService);
 
-    const { customer, order_products } = await createOrder.execute({
+    const { customer, order_products, id } = await createOrder.execute({
       customer_id,
       products,
     });
 
-    const orderedProducts = order_products.map(product => ({
-      price: product.price,
-      product_id: product.product_id,
-      quantity: product.quantity,
-    }));
-
-    const { id, name, email } = customer;
-
     return response.json({
-      customer: { id, name, email },
-      order_products: orderedProducts,
+      id,
+      customer,
+      order_products,
     });
   }
 }
